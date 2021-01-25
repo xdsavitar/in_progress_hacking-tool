@@ -1,5 +1,6 @@
 import socket
 from IPy import IP
+import tool_main
 
 banners_list = []
 open_ports = []
@@ -14,7 +15,7 @@ def multi_Scan(ip_addr_stripped,port_nums):
     open_ports = []
 
 
-def port_scanner(ip_address,port,timeout):
+def port_scanner(ip_address,port,timeout,arg2):
     global banners_list
     global open_ports
 
@@ -25,20 +26,24 @@ def port_scanner(ip_address,port,timeout):
 
         try:
             banner = sock.recv(1024).decode().strip("\n").strip("\r")
+            message = (f"[+] Open Port With Banner [{port}] {banner}")
             print(f"[+] Open Port With Banner [{port}] {banner}")
             banners_list.append(banner)
             open_ports.append(port)
+            tool_main.write_port_logs(message)
 
         except:
+            message = (f"[>+<] Port {port} is Open")
             print(f"[>+<] Port {port} is Open")
             open_ports.append(port)
             banners_list.append(" ")
+            tool_main.write_port_logs(message)
 
     except:
         pass
 
 
-def main(ip_addr_stripped,target_port_scan_ammount,timeout):
+def main(ip_addr_stripped,target_port_scan_ammount,timeout,arg2):
     
     ip_address = ip_addr_stripped
 
@@ -49,6 +54,7 @@ def main(ip_addr_stripped,target_port_scan_ammount,timeout):
     else:
         print("-------- Open Ports --------")
         for port in range(0,int(target_port_scan_ammount)):
-            port_scanner(ip_address,port,timeout)
+            port_scanner(ip_address,port,timeout,arg2)
+
 
         print("Scan Finished")

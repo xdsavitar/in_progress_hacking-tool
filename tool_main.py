@@ -8,6 +8,17 @@ import os
 args_list = []
 device_name_PIPE =  socket.gethostname()
 source_ip_addr = "192.142.123.234"
+called = 0 
+
+
+
+
+def write_port_logs(message):
+	print(message)
+
+	with open("logs.txt",'a') as log:
+		log.write(message +"\n")
+		log.close()
 
 
 
@@ -25,12 +36,10 @@ def command_splitter(arg1,arg2):
 	port_scan.main(ip_address,port_ammount)
 
 
-def call(arg1):
+def call(arg1,arg2):
 	ip = input("Enter ip: ").lower()
-
 	port_ammount = input("Port Ammount: ")
-
-	port_scan.main(ip,port_ammount,arg1)
+	port_scan.main(ip,port_ammount,arg1,arg2)
 
 
 
@@ -46,6 +55,7 @@ def proccess_command(comm):
 			arg1 = args_list[1]
 			arg2 = args_list[2]
 			arg3 = args_list[3]
+			arg4 = args_list[4]
 		except:
 
 
@@ -56,15 +66,14 @@ def proccess_command(comm):
 		if (str(arg0.strip(" ")) == "scanport"):
 
 			if (arg1.strip(" ") == "ip" and arg2.strip(" ") == "portammount"):
-
-
+				print(args_list)
 
 
 				try:
-					if (arg3 == "mode"):
-
+					if (arg3.strip(" ") == "mode" and arg4.strip(" ") == "write"):
+						write = True
 						costum_timeout = float(input("Timeout: "))
-						call(costum_timeout)
+						call(costum_timeout,write)
 						args_list = []
 
 				except UnboundLocalError:
